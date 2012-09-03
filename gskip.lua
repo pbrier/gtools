@@ -11,7 +11,7 @@
 -- use: lua gskip.lua [file1.gcode] [skip count]
 --
 --
-cookie = "M2"; -- we switch files based on this GCODE line
+cookie = "-LAYER-"; -- we switch files based on this GCODE line
 files = {};
 names = {};
 layer = 1;
@@ -36,7 +36,8 @@ function readfile()
     if s == nil then 
       return true;
     end;
-    if s:find("G1") then
+  
+    if s ~= "" and s:find("G1") then
 	  s = s:gsub("E([%d%-%.]+)", function (n) if not doskip then e = e + (n-pe); end; pe = n; return "E".. e*scale;  end)
 	end;
 	if not doskip then
